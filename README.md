@@ -51,3 +51,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 - How to run migration
   command : npx prisma migrate dev --name init
+
+# [ISSUE -1] : Database taking old migration
+
+fix : with DATABASE URL add these '&pgbouncer=true&prepared_statements=false'
