@@ -9,7 +9,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Sass Webinar Platform With AI Sales Agent",
+  title: "DevStreak Spotlight",
   description: "Sass Webinar Platform With AI Sales Agent",
 };
 
