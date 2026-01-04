@@ -55,3 +55,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 # [ISSUE -1] : Database taking old migration
 
 fix : with DATABASE URL add these '&pgbouncer=true&prepared_statements=false'
+
+# [Issue-2] : prisma studio not working
+
+command : npx prisma studio
