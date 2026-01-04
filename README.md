@@ -46,3 +46,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 # ORM
 
 - Prisma ORM
+
+# Prisma
+
+- How to run migration
+  command : npx prisma migrate dev --name init
