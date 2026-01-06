@@ -47,6 +47,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 - Prisma ORM
 
+# Stream
+
+- (Chat,feeds, Video Stream Built In Component)
+
 # Prisma
 
 - How to run migration
