@@ -4,10 +4,10 @@ import { Upload, Webcam } from "lucide-react";
 import FeatureCard from "./_components/FeatureCard";
 import FeatureSectionLayout from "./_components/FeatureSectionLayout";
 import Image from "next/image";
+import { potentialCustomer } from "@/lib/data";
+import UserInfoCard from "@/components/ReusableComponents/UserInfoCard";
 
-type Props = {};
-
-export default function page({}: Props) {
+export default function page() {
   return (
     <div className="w-full mx-auto h-full">
       <div className="w-full flex flex-col sm:flex-row justify-between items-start gap-14">
@@ -54,6 +54,30 @@ export default function page({}: Props) {
                 );
               })}
             </div>
+          </div>
+        </FeatureSectionLayout>
+
+        <FeatureSectionLayout
+          heading="See the list of current customers"
+          link="/pipeline"
+        >
+          <div className="flex gap-4 items-center h-full w-full justify-center relative flex-wrap">
+            {potentialCustomer.slice(0, 2).map((customer, index) => {
+              return (
+                <UserInfoCard
+                  customer={customer}
+                  tags={customer.tags}
+                  key={index}
+                />
+              );
+            })}
+            <Image
+              src="/glowCard.png"
+              alt="info-card"
+              width={350}
+              height={350}
+              className="object-cover rounded-xl absolute px-5 mb-28 hidden sm:flex backdrop-blur-[10px]"
+            />
           </div>
         </FeatureSectionLayout>
       </div>

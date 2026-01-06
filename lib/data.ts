@@ -1,4 +1,5 @@
 import { Bot, Home, Settings, Users, Webcam } from "lucide-react";
+import { CallStatusEnum } from "./generated/prisma/enums";
 
 export const sidebarData = [
   {
@@ -51,5 +52,50 @@ export const onBoardingSteps = [
     title: "Conversion Status",
     complete: false,
     link: "",
+  },
+];
+
+export const potentialCustomer = [
+  {
+    id: "1",
+    name: "John Doe",
+    email: "Johndoe@gmail.com",
+    clerkId: "1",
+    profileImage: "/vercel.svg",
+    isActive: true,
+    lastLoginAt: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deletedAt: null,
+    tags: ["New", "Hot Lead"],
+    callStatus: CallStatusEnum.COMPLETED,
+  },
+  {
+    id: "2",
+    name: "John Doe",
+    email: "Johndoe@gmail.com",
+    clerkId: "2",
+    profileImage: "/vercel.svg",
+    isActive: true,
+    lastLoginAt: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deletedAt: null,
+    tags: ["New", "Hot Lead"],
+    callStatus: CallStatusEnum.COMPLETED,
+  },
+  {
+    id: "3",
+    name: "John Doe",
+    email: "Johndoe@gmail.com",
+    clerkId: "3",
+    profileImage: "/vercel.svg",
+    isActive: true,
+    lastLoginAt: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    deletedAt: null,
+    tags: ["New", "Hot Lead"],
+    callStatus: CallStatusEnum.COMPLETED,
   },
 ];
