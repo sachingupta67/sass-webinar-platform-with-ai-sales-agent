@@ -5,6 +5,7 @@ import { ArrowLeft, ZapIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import PurpleIcon from "../PurpleIcon";
+import CreateWebinarButton from "../CreateWebinarButton";
 
 type Props = { user: User };
 // TODO: Stripe subscription , Assistant , User, Leads , Webinars
@@ -33,6 +34,7 @@ const Header = (props: Props) => {
         <PurpleIcon>
           <ZapIcon className="w-4 h-4" />
         </PurpleIcon>
+        <CreateWebinarButton />
       </div>
     </div>
   );
