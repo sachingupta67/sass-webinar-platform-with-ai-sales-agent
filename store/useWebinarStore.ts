@@ -29,7 +29,7 @@ export type WebinarAdditionalInfo = {
   couponEnabled?: boolean;
 };
 
-type WebinarFormState = {
+export type WebinarFormState = {
   basicInfo: WebinarBasicInfo;
   cta: WebinarCTA;
   additionalInfo: WebinarAdditionalInfo;
