@@ -3,6 +3,7 @@
 import { WebinarFormState } from "@/store/useWebinarStore";
 import { onAuthenticateUser } from "./auth";
 import { prisma } from "@/lib/prismaClient";
+import { revalidatePath } from "next/cache";
 
 function combineDateTime(
   date: Date,
@@ -77,11 +78,25 @@ export const createWebinar = async (formData: WebinarFormState) => {
         couponCode: formData.additionalInfo.couponEnabled
           ? formData.additionalInfo.couponCode
           : null,
-        couponEnabled: formData.additionalInfo.couponEnabled,
-        presenterId,
+        couponEnabled: formData.additionalInfo.couponEnabled || false,
+        presenterId: presenterId as string,
       },
     });
-  } catch (error) {}
+
+    revalidatePath("/");
+    return {
+      status: 200,
+      message: "Webinar created successfully",
+      webinarId: webinar.id,
+      webinarLink: `/webinar/${webinar.id}`,
+    };
+  } catch (error) {
+    console.error("Error creating webinar", error);
+    return {
+      status: 500,
+      message: "Failed to create webinar. Please try again.",
+    };
+  }
 };
 
 // 2:06:50
