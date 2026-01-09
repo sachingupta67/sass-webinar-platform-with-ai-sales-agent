@@ -56,6 +56,7 @@ const MultiStepForm: React.FC<Props> = (props) => {
     const isValid = validateStep(currentStep.id as keyof WebinarFormState);
     if (!isValid) {
       setValidationError("Please fill in all required fields");
+      toast.error("Please fill in all required fields");
       return;
     }
 
