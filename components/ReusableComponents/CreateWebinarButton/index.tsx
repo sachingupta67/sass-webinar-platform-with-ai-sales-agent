@@ -21,19 +21,19 @@ function CreateWebinarButton() {
   const [webinarLink, setWebinarLink] = useState("");
 
   const steps = [
-    // {
-    //   id: "basicInfo",
-    //   title: "Basic Information",
-    //   description: "Please fill out the standard info needed for your webinar",
-    //   component: <BasicInfoStep />,
-    // },
-    // {
-    //   id: "cta",
-    //   title: "CTA",
-    //   description:
-    //     "Please provide the end-point for your customers through your webinar",
-    //   component: <CTAStep assistants={[]} stripeProduct={[]} />,
-    // },
+    {
+      id: "basicInfo",
+      title: "Basic Information",
+      description: "Please fill out the standard info needed for your webinar",
+      component: <BasicInfoStep />,
+    },
+    {
+      id: "cta",
+      title: "CTA",
+      description:
+        "Please provide the end-point for your customers through your webinar",
+      component: <CTAStep assistants={[]} stripeProduct={[]} />,
+    },
 
     {
       id: "additionalInfo",
