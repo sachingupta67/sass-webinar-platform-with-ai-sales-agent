@@ -63,7 +63,8 @@ export const validateAdditionalInfo = (
   const errors: ValidationErrors = {};
 
   // if coupon is enabled , code is required
-  if (data.couponEnabled && data.couponCode?.trim()) {
+
+  if (data.couponEnabled && !data.couponCode?.trim()) {
     errors.couponCode = "Coupon code is required";
   }
   return {

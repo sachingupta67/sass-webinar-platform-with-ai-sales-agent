@@ -6,15 +6,13 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CtaTypeEnum } from "@/lib/generated/prisma/enums";
 import { cn } from "@/lib/utils";
 import { useWebinarStore } from "@/store/useWebinarStore";
-import { TabsContent } from "@radix-ui/react-tabs";
 import { X } from "lucide-react";
 import { useState } from "react";
 
-type Props = {};
-const CTAStep = (props: Props) => {
+const CTAStep = () => {
   const { formData, getValidationErrors, updateCtaField, addTag, removeTag } =
     useWebinarStore();
-  const { ctaType, ctaLabel, aiAgent, priceId, tags } = formData.cta;
+  const { ctaLabel, tags } = formData.cta;
   const [tagInput, setTagInput] = useState("");
   const errors = getValidationErrors("cta");
 
@@ -55,7 +53,7 @@ const CTAStep = (props: Props) => {
           className={cn(
             "bg-background/50! border border-input",
             errors.ctaLabel &&
-              "border-red-400 focus-visible:border'border-red-400 focus-visible:ring-red-400'"
+              "border-red-400 focus-visible:border-red-400 focus-visible:ring-red-400"
           )}
         />
         {errors.ctaLabel && (

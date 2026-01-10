@@ -68,7 +68,7 @@ const BasicInfoStep = () => {
           className={cn(
             "bg-background/50! border border-input",
             errors.webinarName &&
-              "border-red-400 focus-visible:border'border-red-400 focus-visible:ring-red-400'"
+              "border-red-400 focus-visible:border-red-400 focus-visible:ring-red-400"
           )}
         />
         {errors.webinarName && (
@@ -92,7 +92,7 @@ const BasicInfoStep = () => {
           className={cn(
             "min-h-25 bg-background/50! border border-input",
             errors.description &&
-              "border-red-400 focus-visible:border'border-red-400 focus-visible:ring-red-400'"
+              "border-red-400 focus-visible:border-red-400 focus-visible:ring-red-400"
           )}
         />
         {errors.description && (

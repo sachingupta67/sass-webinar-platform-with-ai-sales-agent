@@ -1,9 +1,4 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useWebinarStore } from "@/store/useWebinarStore";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { PlusIcon } from "lucide-react";
@@ -11,10 +6,9 @@ import React, { useState } from "react";
 import MultiStepForm from "./MultiStepForm";
 import BasicInfoStep from "./BasicInfoStep";
 import CTAStep from "./CTAStep";
+import AdditionalInfoStep from "./AdditionalInfoStep";
 
-type Props = {};
-
-function CreateWebinarButton({}: Props) {
+function CreateWebinarButton() {
   const {
     isComplete,
     isModalOpen,
@@ -27,18 +21,26 @@ function CreateWebinarButton({}: Props) {
   const [webinarLink, setWebinarLink] = useState("");
 
   const steps = [
+    // {
+    //   id: "basicInfo",
+    //   title: "Basic Information",
+    //   description: "Please fill out the standard info needed for your webinar",
+    //   component: <BasicInfoStep />,
+    // },
+    // {
+    //   id: "cta",
+    //   title: "CTA",
+    //   description:
+    //     "Please provide the end-point for your customers through your webinar",
+    //   component: <CTAStep assistants={[]} stripeProduct={[]} />,
+    // },
+
     {
-      id: "basicInfo",
-      title: "Basic Information",
-      description: "Please fill out the standard info needed for your webinar",
-      component: <BasicInfoStep />,
-    },
-    {
-      id: "cta",
-      title: "CTA",
+      id: "additionalInfo",
+      title: "Additional Information",
       description:
-        "Please provide the end-point for your customers through your webinar",
-      component: <CTAStep assistants={[]} stripeProduct={[]} />,
+        "Please fill out information about additional option if necessary ",
+      component: <AdditionalInfoStep />,
     },
   ];
 
