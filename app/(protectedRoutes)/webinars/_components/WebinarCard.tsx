@@ -44,7 +44,7 @@ const WebinarCard = (props: Props) => {
           </div>
         </Link>
         <Link
-          href={`/webinar/${webinar?.id}/pipeline`}
+          href={`/webinars/${webinar?.id}/pipeline`}
           className="flex px-4 py-2 rounded-md border-[0.5px] border-border bg-secondary"
         >
           <LayoutDashboard className="w-4 h-4" />

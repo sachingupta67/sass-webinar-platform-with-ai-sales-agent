@@ -20,7 +20,7 @@ const Header = (props: Props) => {
         <Button
           className="bg-primary/10 border border-border rounded-xl"
           variant="outline"
-          onClick={() => router.push("/webinar")}
+          onClick={() => router.push("/webinars")}
         >
           <ArrowLeft /> Back to Webinars
         </Button>
