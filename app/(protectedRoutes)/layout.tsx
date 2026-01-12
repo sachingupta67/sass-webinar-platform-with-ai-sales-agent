@@ -1,4 +1,5 @@
 import { onAuthenticateUser } from "@/actions/auth";
+import { getAllProductsFromStripe } from "@/actions/stripe";
 import Header from "@/components/ReusableComponents/LayoutComponents/Header";
 import Sidebar from "@/components/ReusableComponents/LayoutComponents/Sidebar";
 
@@ -16,6 +17,7 @@ const Layout = async (props: props) => {
   if (!userExists.user) {
     redirect("/sign-in");
   }
+  const stripeProducts = await getAllProductsFromStripe();
   return (
     <div className="flex w-full min-h-screen">
       {/* Sidebar */}
@@ -23,7 +25,10 @@ const Layout = async (props: props) => {
       {/* Main Content */}
       <div className="flex flex-col w-full h-screen overflow-auto px-4 scrollbar-hide container mx-auto">
         {/* Header */}
-        <Header user={userExists.user} />
+        <Header
+          user={userExists.user}
+          stripeProduct={stripeProducts.products || []}
+        />
         <div className="flex-1 py-10">{children}</div>
       </div>
     </div>

@@ -2,22 +2,34 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CtaTypeEnum } from "@/lib/generated/prisma/enums";
 import { cn } from "@/lib/utils";
 import { useWebinarStore } from "@/store/useWebinarStore";
-import { X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { useState } from "react";
+import Stripe from "stripe";
 
-const CTAStep = () => {
+type Props = {
+  stripeProducts: Stripe.Product[] | [];
+};
+const CTAStep = (props: Props) => {
+  const { stripeProducts } = props;
   const { formData, getValidationErrors, updateCtaField, addTag, removeTag } =
     useWebinarStore();
-  const { ctaLabel, tags } = formData.cta;
+  const { ctaLabel, tags, priceId } = formData.cta;
   const [tagInput, setTagInput] = useState("");
   const errors = getValidationErrors("cta");
 
   const handlerChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     updateCtaField(name as keyof typeof formData.cta, value);
@@ -33,6 +45,10 @@ const CTAStep = () => {
 
   const handleSelectCTAType = (type: CtaTypeEnum) => {
     updateCtaField("ctaType", type);
+  };
+
+  const handleProductChange = (value: string) => {
+    updateCtaField("priceId", value);
   };
 
   return (
@@ -53,7 +69,7 @@ const CTAStep = () => {
           className={cn(
             "bg-background/50! border border-input",
             errors.ctaLabel &&
-              "border-red-400 focus-visible:border-red-400 focus-visible:ring-red-400"
+              "border-red-400 focus-visible:border-red-400 focus-visible:ring-red-400",
           )}
         />
         {errors.ctaLabel && (
@@ -115,6 +131,65 @@ const CTAStep = () => {
             </TabsTrigger>
           </TabsList>
         </Tabs>
+      </div>
+      <div className="space-y-2">
+        <Label> Attach an Product</Label>
+        <div className="relative">
+          <div className="mb-2">
+            <div className="relative">
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
+              <Input
+                placeholder="search agents"
+                className="pl-9 bg-background/50! border border-input"
+              />
+            </div>
+          </div>
+
+          <Select value={priceId} onValueChange={handleProductChange}>
+            <SelectTrigger className="w-full bg-background/50! border border-input">
+              <SelectValue placeholder="select an product" />
+            </SelectTrigger>
+            {/*<SelectContent className="bg-background border border-input max-h-48">
+              {stripeProducts?.length > 0 ? (
+                stripeProducts?.map((product, i) => {
+                  return (
+                    <SelectItem
+                      key={i}
+                      value={product?.default_price?.toString() || ""}
+                      className="bg-background/50! hover:bg-white/10!"
+                    >
+                      {product.name}
+                    </SelectItem>
+                  );
+                })
+              ) : (
+                <SelectItem value="" disabled>
+                  Create Product in Stripe
+                </SelectItem>
+              )}
+            </SelectContent>*/}
+
+            <SelectContent className="bg-background border border-input max-h-48">
+              {stripeProducts?.length > 0 ? (
+                stripeProducts.map((product) =>
+                  product.default_price ? (
+                    <SelectItem
+                      key={product.id}
+                      value={String(product.default_price)}
+                      className="bg-background/50! hover:bg-white/10!"
+                    >
+                      {product.name} | {String(product.default_price)}
+                    </SelectItem>
+                  ) : null,
+                )
+              ) : (
+                <SelectItem value="__no_products__" disabled>
+                  Create Product in Stripe
+                </SelectItem>
+              )}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
     </div>
   );
