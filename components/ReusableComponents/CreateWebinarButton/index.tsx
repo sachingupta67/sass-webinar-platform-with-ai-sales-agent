@@ -49,7 +49,7 @@ function CreateWebinarButton() {
 
     // once done with steps user will get webinar link
     setWebinarLink(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/live-webinar/${webinarId}`
+      `${process.env.NEXT_PUBLIC_BASE_URL}/live-webinar/${webinarId}`,
     );
   };
   return (

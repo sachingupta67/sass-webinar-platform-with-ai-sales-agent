@@ -77,5 +77,5 @@ export const validateAdditionalInfo = (
 export type AttendanceData = {
   count: number;
   users: Attendee[];
-  webinarTags: string[];
+  webinarTags?: string[];
 };

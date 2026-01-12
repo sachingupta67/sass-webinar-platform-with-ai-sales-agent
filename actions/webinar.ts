@@ -202,7 +202,7 @@ export const getWebinarAttendance = async (
       };
     }
 
-    if (options.includeUsers) {
+    if (includeUsers) {
       for (const type of Object.values(AttendedTypeEnum)) {
         if (
           (type === AttendedTypeEnum.ADD_TO_CART &&

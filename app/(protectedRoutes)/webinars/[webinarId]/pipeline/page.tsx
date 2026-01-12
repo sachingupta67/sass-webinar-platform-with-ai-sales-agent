@@ -36,7 +36,7 @@ const WebinarPipelinePage = async (props: Props) => {
             title={formatColumnTitle(columnType as AttendedTypeEnum)}
             count={columnData.count}
             users={columnData.users}
-            tags={columnData.webinarTags}
+            tags={columnData?.webinarTags || []}
           />
         ))}
       </div>
