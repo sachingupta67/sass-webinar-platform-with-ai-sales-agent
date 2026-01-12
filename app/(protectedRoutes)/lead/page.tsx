@@ -13,6 +13,15 @@ import { LayoutDashboard, Users, Webcam } from "lucide-react";
 import { getRandomBadgeStyle } from "@/lib/utils";
 
 const LeadPage = () => {
+  const leadData = [] as any;
+
+  if (!leadData.length) {
+    return (
+      <div className="text-3xl h-100 flex justify-center items-center">
+        No Leads found
+      </div>
+    );
+  }
   return (
     <div className="w-full flex flex-col gap-8">
       <PageHeader
@@ -35,7 +44,7 @@ const LeadPage = () => {
         </TableHeader>
 
         <TableBody>
-          {leadData?.map((lead, i) => (
+          {leadData?.map((lead: any, i: number) => (
             <TableRow
               key={i}
               className="
@@ -55,7 +64,7 @@ const LeadPage = () => {
 
               <TableCell className="py-4">
                 <div className="flex justify-end gap-2 flex-wrap">
-                  {lead?.tags.map((tag, idx) => (
+                  {lead?.tags.map((tag: string, idx: number) => (
                     <Badge
                       key={idx}
                       variant="outline"
