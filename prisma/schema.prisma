@@ -11,8 +11,8 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  url       = env("DATABASE_URL")   // pooler (runtime)
+  directUrl = env("DIRECT_URL")     // direct (Prisma CLI)
 }
 
 enum WebinarStatusEnum {
@@ -103,8 +103,8 @@ model Attendee {
   email      String         @unique
   name       String         @db.VarChar(100)
   callStatus CallStatusEnum @default(PENDING)
-  Attendance Attendance[]
-  Webinar    Webinar[]
+  attendance Attendance[]
+  webinar    Webinar[]
 }
 
 model Attendance {

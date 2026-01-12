@@ -3,6 +3,7 @@ import {
   WebinarBasicInfo,
   WebinarCTA,
 } from "@/store/useWebinarStore";
+import { Attendee } from "./generated/prisma/client";
 
 export type ValidationErrors = Record<string, string>;
 
@@ -58,7 +59,7 @@ export const validateCTA = (data: WebinarCTA): ValidationResult => {
 };
 
 export const validateAdditionalInfo = (
-  data: WebinarAdditionalInfo
+  data: WebinarAdditionalInfo,
 ): ValidationResult => {
   const errors: ValidationErrors = {};
 
@@ -71,4 +72,10 @@ export const validateAdditionalInfo = (
     valid: Object.keys(errors).length === 0,
     errors,
   };
+};
+
+export type AttendanceData = {
+  count: number;
+  users: Attendee[];
+  webinarTags: string[];
 };

@@ -4,11 +4,13 @@ import { WebinarFormState } from "@/store/useWebinarStore";
 import { onAuthenticateUser } from "./auth";
 import { prisma } from "@/lib/prismaClient";
 import { revalidatePath } from "next/cache";
+import { AttendedTypeEnum, CtaTypeEnum } from "@/lib/generated/prisma/enums";
+import { AttendanceData } from "@/lib/types";
 
 function combineDateTime(
   date: Date,
   timeStr: string,
-  timeFormat: "AM" | "PM"
+  timeFormat: "AM" | "PM",
 ): Date {
   const [hoursStr, minutesStr] = timeStr.split(":");
   let hours = Number.parseInt(hoursStr, 10);
@@ -52,7 +54,7 @@ export const createWebinar = async (formData: WebinarFormState) => {
     const combinedDateTime = combineDateTime(
       formData.basicInfo.date,
       formData.basicInfo.time,
-      formData.basicInfo.timeFormat || "AM"
+      formData.basicInfo.timeFormat || "AM",
     );
 
     const now = new Date();
@@ -118,6 +120,140 @@ export const getWebinarsByPresentedId = async (presenterId: string) => {
     return webinars;
   } catch (error) {
     console.error("Failed to fetch webinars", error);
+    return {
+      status: 500,
+      message: "Failed to fetch webinars. Please try again.",
+    };
+  }
+};
+
+export const getWebinarAttendance = async (
+  webinarId: string,
+  options: { includeUsers?: boolean; userLimit?: number } = {
+    includeUsers: false,
+    userLimit: 100,
+  },
+) => {
+  const { includeUsers, userLimit } = options;
+  try {
+    const webinar = await prisma.webinar.findUnique({
+      where: { id: webinarId },
+      select: {
+        id: true,
+        ctaType: true,
+        tags: true,
+        _count: {
+          select: {
+            attendances: true,
+          },
+        },
+      },
+    });
+    if (!webinar) {
+      return {
+        success: false,
+        status: 404,
+        message: "Webinar not found",
+      };
+    }
+
+    const attendanceCount = await prisma.attendance.groupBy({
+      by: ["attendedType"],
+      where: {
+        webinarId,
+      },
+      _count: {
+        attendedType: true,
+      },
+    });
+    const result: Record<AttendedTypeEnum, AttendanceData> = {} as Record<
+      AttendedTypeEnum,
+      AttendanceData
+    >;
+
+    for (const type of Object.values(AttendedTypeEnum)) {
+      if (
+        type === AttendedTypeEnum.ADD_TO_CART &&
+        webinar.ctaType === CtaTypeEnum.BOOK_A_CALL
+      ) {
+        continue;
+      }
+
+      if (
+        type === AttendedTypeEnum.BREAKOUT_ROOM &&
+        webinar.ctaType !== CtaTypeEnum.BOOK_A_CALL
+      ) {
+        continue;
+      }
+
+      const countItem = attendanceCount.find((item) => {
+        if (
+          webinar.ctaType === CtaTypeEnum.BOOK_A_CALL &&
+          type === AttendedTypeEnum.BREAKOUT_ROOM &&
+          item.attendedType === AttendedTypeEnum.ADD_TO_CART
+        ) {
+          return true;
+        }
+        return Boolean(item.attendedType) === true; // TODO : needed to check later on
+      });
+      result[type] = {
+        count: countItem ? countItem._count.attendedType : 0,
+        users: [],
+      };
+    }
+
+    if (options.includeUsers) {
+      for (const type of Object.values(AttendedTypeEnum)) {
+        if (
+          (type === AttendedTypeEnum.ADD_TO_CART &&
+            webinar.ctaType === CtaTypeEnum.BOOK_A_CALL) ||
+          (type === AttendedTypeEnum.BREAKOUT_ROOM &&
+            webinar.ctaType !== CtaTypeEnum.BOOK_A_CALL)
+        ) {
+          continue;
+        }
+        const queryType =
+          webinar.ctaType === CtaTypeEnum.BOOK_A_CALL &&
+          type === AttendedTypeEnum.BREAKOUT_ROOM
+            ? AttendedTypeEnum.ADD_TO_CART
+            : type;
+
+        if (result[type].count > 0) {
+          const attendances = await prisma.attendance.findMany({
+            where: {
+              webinarId,
+              attendedType: queryType,
+            },
+            include: {
+              user: true,
+            },
+            take: userLimit, // limit the number of users returned
+            orderBy: {
+              joinedAt: "desc", // most recent first
+            },
+          });
+          result[type].users = attendances.map((attendance) => {
+            return {
+              id: attendance.user.id,
+              name: attendance.user.name,
+              email: attendance.user.email,
+              attendedAt: attendance.joinedAt,
+              stripeConnectedId: null,
+              callStatus: attendance.user.callStatus,
+            };
+          });
+        }
+      }
+    }
+    // revalidatePath(`/webinars/${webinarId}/pipelines`); // TODO: causing issue
+    return {
+      status: 200,
+      data: result,
+      ctaType: webinar.ctaType,
+      webinarTags: webinar.tags,
+    };
+  } catch (error) {
+    console.error("Failed to fetch webinar attendance type", error);
     return {
       status: 500,
       message: "Failed to fetch webinars. Please try again.",
