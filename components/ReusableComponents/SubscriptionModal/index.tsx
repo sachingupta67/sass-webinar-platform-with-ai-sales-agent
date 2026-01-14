@@ -26,7 +26,6 @@ const SubscriptionModal = (props: Props) => {
   const { user } = props;
   const router = useRouter();
   const stripe = useStripe();
-  console.log("stripe::::", stripe);
   const elements = useElements();
   const [loading, setLoading] = useState(false);
 
@@ -51,7 +50,7 @@ const SubscriptionModal = (props: Props) => {
           payment_method: {
             card: cardElement,
           },
-        }
+        },
       );
 
       if (error) {
