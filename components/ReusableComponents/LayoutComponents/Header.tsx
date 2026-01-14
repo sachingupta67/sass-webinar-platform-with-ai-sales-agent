@@ -7,6 +7,8 @@ import React from "react";
 import PurpleIcon from "../PurpleIcon";
 import CreateWebinarButton from "../CreateWebinarButton";
 import Stripe from "stripe";
+import StripeElements from "../Stripe/Element";
+import SubscriptionModal from "../SubscriptionModal";
 
 type Props = { user: User; stripeProduct: Stripe.Product[] | [] };
 // TODO: Stripe subscription , Assistant , User, Leads , Webinars
@@ -35,7 +37,13 @@ const Header = (props: Props) => {
         <PurpleIcon>
           <ZapIcon className="w-4 h-4" />
         </PurpleIcon>
-        <CreateWebinarButton stripeProducts={stripeProduct} />
+        {user.subscription ? (
+          <CreateWebinarButton stripeProducts={stripeProduct} />
+        ) : (
+          <StripeElements>
+            <SubscriptionModal user={user} />
+          </StripeElements>
+        )}
       </div>
     </div>
   );
