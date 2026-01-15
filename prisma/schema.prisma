@@ -11,8 +11,8 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")   // pooler (runtime)
-  directUrl = env("DIRECT_URL")     // direct (Prisma CLI)
+  url       = env("DATABASE_URL") // pooler (runtime)
+  directUrl = env("DIRECT_URL") // direct (Prisma CLI)
 }
 
 enum WebinarStatusEnum {
@@ -43,6 +43,12 @@ enum CallStatusEnum {
   COMPLETED
 }
 
+enum PlanEnum {
+  free
+  premium
+  pro
+}
+
 model User {
   id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name         String    @db.VarChar(100)
@@ -51,13 +57,17 @@ model User {
   profileImage String
   webinars     Webinar[] @relation("PresenterWebinars")
 
-  stripeConnectId  String?   @db.VarChar(255)
-  lastLoginAt      DateTime?
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
-  deletedAt        DateTime?
-  subscription     Boolean   @default(false)
-  stripeCustomerId String?   @db.VarChar(255)
+  lastLoginAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  // Subscription
+  subscription     Boolean  @default(false)
+  stripeCustomerId String?  @db.VarChar(255) // BUYER/PaYer
+  stripeConnectId  String?  @db.VarChar(255) // Seller/RecieverId
+  plan             PlanEnum @default(free)
+  stripePriceId    String?  @db.VarChar(255)
 
   @@index([email])
   @@index([clerkId])
