@@ -36,6 +36,7 @@ const SubscriptionModal = (props: Props) => {
         return toast.error("Stripe not initialised");
       }
       const intent = await onGetStripeClientSecret(user.email, user.id);
+      console.log("intent::::", intent);
       if (!intent.secret) {
         throw new Error("Failed to initialize payment");
       }
@@ -67,6 +68,7 @@ const SubscriptionModal = (props: Props) => {
       setLoading(false);
     }
   };
+
   return (
     <Dialog>
       <DialogTrigger asChild>

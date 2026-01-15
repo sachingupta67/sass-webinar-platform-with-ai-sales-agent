@@ -4,7 +4,6 @@ import { stripe } from "@/lib/stripe";
 import { onAuthenticateUser } from "./auth";
 import { prisma } from "@/lib/prismaClient";
 import { subscriptionPriceId } from "@/lib/data";
-import { Stripe } from "@stripe/stripe-js";
 
 export const getAllProductsFromStripe = async () => {
   try {
@@ -31,7 +30,7 @@ export const getAllProductsFromStripe = async () => {
       },
       {
         stripeAccount: currentUser.user.stripeConnectId,
-      },
+      }
     );
     return {
       products: products.data,
@@ -50,7 +49,7 @@ export const getAllProductsFromStripe = async () => {
 
 export const onGetStripeClientSecret = async (
   email: string,
-  userId: string,
+  userId: string
 ) => {
   try {
     let customer;
@@ -100,4 +99,18 @@ export const onGetStripeClientSecret = async (
   }
 };
 
-//4:02:35
+export const updateSubscription = async (subscription: Stripe.subscription) => {
+  try {
+    const userId = subscription.metadata.userId;
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        subscription: subscription.status === "active",
+      },
+    });
+  } catch (err) {
+    console.log("Error Updating subscription::::", err);
+  }
+};
+
+// 4:15:15
