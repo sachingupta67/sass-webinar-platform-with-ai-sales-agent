@@ -63,3 +63,27 @@ fix : with DATABASE URL add these '&pgbouncer=true&prepared_statements=false'
 # [Issue-2] : prisma studio not working
 
 command : npx prisma studio
+
+# Stripe Connection
+
+- from Stripe Dashboard
+- get 'Publishable Key' ===>'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY'
+- get 'Secret Key' ===> 'STRIPE_SECRET_KEY'
+
+Packages needs to install
+
+- npm install stripe @stripe/stripe-js
+
+Now Need to initiase the stripe client
+
+- make some utils in lib folder to initliase stripe client
+  - initialise stripe with Secret key
+  - expose publishable key
+
+-- Setup Products that we want to use
+
+- go to dashboard
+- go to product catalog from sidebar
+- add products ex: Premium Pro Basic with amounts
+  - copy price id
+  - make an object of priceids and expose into stripe initlizer files

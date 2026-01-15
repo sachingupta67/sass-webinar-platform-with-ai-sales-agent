@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { STRIPE_PRICE_IDS } from "@/lib/data";
 import { User } from "@/lib/generated/prisma/client";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { Loader2, PlusIcon } from "lucide-react";
@@ -51,7 +52,7 @@ const SubscriptionModal = (props: Props) => {
           payment_method: {
             card: cardElement,
           },
-        },
+        }
       );
 
       if (error) {
@@ -66,6 +67,33 @@ const SubscriptionModal = (props: Props) => {
       toast.error("Faild to update subscription");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSubscription = async () => {
+    // CURRENT PRODUCT PRICE ID which default being to select
+    const selectedProductPrice = STRIPE_PRICE_IDS.premium; // We can select from dropdown too
+    if (!selectedProductPrice) {
+      toast.error("Price not present to get subscription");
+    }
+    try {
+      const response = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ priceId: selectedProductPrice }),
+      });
+      const { url } = await response.json();
+      if (url) {
+        window.location.href = url;
+      } else {
+        toast.error("Checkout url not found");
+      }
+    } catch (err) {
+      const errMsg: string =
+        err instanceof Error ? err.message : JSON.stringify(err);
+      toast.error(errMsg);
     }
   };
 
@@ -105,7 +133,8 @@ const SubscriptionModal = (props: Props) => {
           <Button
             type="submit"
             className="w-full sm:w-auto"
-            onClick={handleConfirm}
+            // onClick={handleConfirm}
+            onClick={handleSubscription}
             disabled={loading}
           >
             {loading ? (

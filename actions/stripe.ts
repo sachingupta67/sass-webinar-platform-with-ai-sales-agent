@@ -4,6 +4,7 @@ import { stripe } from "@/lib/stripe";
 import { onAuthenticateUser } from "./auth";
 import { prisma } from "@/lib/prismaClient";
 import { subscriptionPriceId } from "@/lib/data";
+import Stripe from "stripe";
 
 export const getAllProductsFromStripe = async () => {
   try {
@@ -112,5 +113,3 @@ export const updateSubscription = async (subscription: Stripe.subscription) => {
     console.log("Error Updating subscription::::", err);
   }
 };
-
-// 4:15:15

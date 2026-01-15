@@ -63,11 +63,13 @@ model User {
   deletedAt   DateTime?
 
   // Subscription
-  subscription     Boolean  @default(false)
-  stripeCustomerId String?  @db.VarChar(255) // BUYER/PaYer
-  stripeConnectId  String?  @db.VarChar(255) // Seller/RecieverId
-  plan             PlanEnum @default(free)
-  stripePriceId    String?  @db.VarChar(255)
+  subscription           Boolean   @default(false)
+  stripeCustomerId       String?   @db.VarChar(255) // BUYER/PaYer
+  stripeConnectId        String?   @db.VarChar(255) // Seller/RecieverId
+  plan                   PlanEnum  @default(free)
+  stripePriceId          String?   @db.VarChar(255)
+  stripeCurrentPeriodEnd DateTime?
+  stripeSubscriptionId   String?   @db.VarChar(255)
 
   @@index([email])
   @@index([clerkId])

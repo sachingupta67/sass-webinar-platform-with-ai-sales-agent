@@ -101,3 +101,11 @@ export const potentialCustomer = [
 ];
 
 export const subscriptionPriceId = "price_1SpjgHLyZRXGKnkM4e8XzLQW";
+
+export const STRIPE_PRICE_IDS = {
+  premium: "price_1SpjgHLyZRXGKnkM4e8XzLQW",
+  pro: "price_1SorGVLyZRXGKnkMFRUc21bh",
+  basic: "price_1SorGALyZRXGKnkMUxQ1u7MA",
+};
+
+export type StripePriceId = keyof typeof STRIPE_PRICE_IDS;
