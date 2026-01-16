@@ -19,3 +19,13 @@ const BADGE_STYLES = [
 export const getRandomBadgeStyle = () => {
   return BADGE_STYLES[Math.floor(Math.random() * BADGE_STYLES.length)];
 };
+
+export const getWebinarInitials = (title: string, max = 3) => {
+  return title
+    .trim()
+    .split(/\s+/)
+    .slice(0, max)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+};
