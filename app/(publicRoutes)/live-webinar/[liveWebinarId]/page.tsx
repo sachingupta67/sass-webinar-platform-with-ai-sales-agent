@@ -38,7 +38,7 @@ const Page = async (props: Props) => {
         apiKey={apiKey}
         token={token}
         callId={callId}
-        checkUser={checkUser.user || null}
+        user={checkUser.user || null}
         error={error}
         webinar={webinarData}
       />

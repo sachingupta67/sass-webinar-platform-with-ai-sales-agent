@@ -132,7 +132,7 @@ model Attendance {
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
   attendeeId   String           @db.Uuid
-  userId       String           @db.Uuid
+  userId       String?           @db.Uuid
 
   @@unique([attendeeId, webinarId]) // this enforce 1 attendee per webinar
   @@index([webinarId])

@@ -1,4 +1,5 @@
 import { Webinar } from "@/lib/generated/prisma/client";
+import { getWebinarInitials } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar, LayoutDashboard } from "lucide-react";
 import Image from "next/image";
@@ -15,13 +16,19 @@ const WebinarCard = (props: Props) => {
   return (
     <div className="flex gap-3 flex-col items-start w-full">
       <Link href={`/live-webinar/${webinar?.id}`} className="w-full max-w-100">
-        <Image
+        {/* <Image
           className="rounded-md w-100"
           height={100}
           width={400}
           alt="webinar"
           src="/darkthumbnail.png"
-        />
+        /> */}
+
+        <div className="w-full max-w-md aspect-4/3 relative rounded-4xl overflow-hidden mb-6 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center">
+          <span className="text-6xl font-extrabold tracking-wider text-white">
+            {getWebinarInitials(webinar.title)}
+          </span>
+        </div>
       </Link>
       <div className="w-full flex justify-between gap-3 items-center">
         <Link

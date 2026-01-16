@@ -4,7 +4,11 @@ import { WebinarFormState } from "@/store/useWebinarStore";
 import { onAuthenticateUser } from "./auth";
 import { prisma } from "@/lib/prismaClient";
 import { revalidatePath } from "next/cache";
-import { AttendedTypeEnum, CtaTypeEnum } from "@/lib/generated/prisma/enums";
+import {
+  AttendedTypeEnum,
+  CtaTypeEnum,
+  WebinarStatusEnum,
+} from "@/lib/generated/prisma/enums";
 import { AttendanceData } from "@/lib/types";
 
 function combineDateTime(
@@ -282,5 +286,34 @@ export const getWebinarById = async (liveWebinarId: string) => {
   } catch (err) {
     console.error("Error fetching webinar", err);
     throw new Error("Failed to fetch webinar");
+  }
+};
+
+export const changeWebinarStatus = async (
+  webinarId: string,
+  status: WebinarStatusEnum
+) => {
+  try {
+    const webinar = await prisma.webinar.update({
+      where: {
+        id: webinarId,
+      },
+      data: {
+        webinarStatus: status,
+      },
+    });
+    return {
+      status: 200,
+      success: true,
+      message: "Webinar status updated successfully",
+      data: webinar,
+    };
+  } catch (err) {
+    console.error("Error updating webinar status", err);
+    return {
+      status: 500,
+      success: false,
+      message: "Failed to update webinar status",
+    };
   }
 };
