@@ -38,10 +38,9 @@ export const createWebinar = async (formData: WebinarFormState) => {
       return { status: 401, message: "Unauthorized user" };
     }
 
-    // TODO : check if user has a subscription
-    // if (!user.user?.subscription) {
-    //   return { status: 402, message: "Subscription required" };
-    // }
+    if (!user.user?.subscription) {
+      return { status: 402, message: "Subscription required" };
+    }
 
     const presenterId = user.user?.id;
     console.log("form data", formData, presenterId);

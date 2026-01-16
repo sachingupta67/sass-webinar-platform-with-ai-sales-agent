@@ -7,6 +7,7 @@ import WebinarUpcomingState from "./UpcomingWebinar/WebinarUpcomingState";
 import { usePathname, useRouter } from "next/navigation";
 import { useAttendeeStore } from "@/store/useAttendeeStore";
 import { toast } from "sonner";
+import WaitlistComponent from "./UpcomingWebinar/WaitlistComponent";
 
 type Props = {
   apiKey: string;
@@ -29,15 +30,57 @@ const RenderWebinar = (props: Props) => {
     }
   }, [error]);
   // TODO : build waiting room and live webinar
-  return (
-    <React.Fragment>
-      {webinar.webinarStatus === WebinarStatusEnum.SCHEDULED ? (
-        <WebinarUpcomingState webinar={webinar} currentUser={user || null} />
-      ) : (
-        ""
-      )}
-    </React.Fragment>
-  );
+
+  const renderWebinarStatus = () => {
+    switch (webinar.webinarStatus) {
+      case WebinarStatusEnum.SCHEDULED:
+        return (
+          <WebinarUpcomingState webinar={webinar} currentUser={user || null} />
+        );
+      case WebinarStatusEnum.WAITING_ROOM:
+        return (
+          <WebinarUpcomingState webinar={webinar} currentUser={user || null} />
+        );
+      case WebinarStatusEnum.LIVE:
+        return (
+          // TODO : Add Livestream component and webinar stuff
+          <React.Fragment>
+            {user?.id === webinar.presenterId ? (
+              // <LiveStreamState apiKey={apiKey} token={token} callId={callId} />
+              "Live Stream State for Presenter"
+            ) : attendee ? (
+              // <Participant apiKey={apiKey} token={token} callId={callId} />
+              "Live Stream State for Participant"
+            ) : (
+              <WebinarUpcomingState
+                webinar={webinar}
+                currentUser={user || null}
+              />
+            )}
+          </React.Fragment>
+        );
+      case WebinarStatusEnum.CANCELLED:
+        return (
+          <div className="flex justify-center items-center h-full w-full">
+            <div className="text-center space-y-4">
+              <h3 className="text-2xl font-semibold text-primary">
+                {webinar?.title}
+              </h3>
+              <p className="text-muted-foreground text-xs">
+                This webinar has been cancelled. Please check back later for
+                more information.
+              </p>
+            </div>
+          </div>
+        );
+      default:
+        return (
+          <WebinarUpcomingState webinar={webinar} currentUser={user || null} />
+        );
+    }
+  };
+
+  return <React.Fragment>{renderWebinarStatus()}</React.Fragment>;
 };
 
 export default RenderWebinar;
