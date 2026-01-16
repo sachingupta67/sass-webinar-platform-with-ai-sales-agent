@@ -10,7 +10,7 @@ import { AttendanceData } from "@/lib/types";
 function combineDateTime(
   date: Date,
   timeStr: string,
-  timeFormat: "AM" | "PM",
+  timeFormat: "AM" | "PM"
 ): Date {
   const [hoursStr, minutesStr] = timeStr.split(":");
   let hours = Number.parseInt(hoursStr, 10);
@@ -54,7 +54,7 @@ export const createWebinar = async (formData: WebinarFormState) => {
     const combinedDateTime = combineDateTime(
       formData.basicInfo.date,
       formData.basicInfo.time,
-      formData.basicInfo.timeFormat || "AM",
+      formData.basicInfo.timeFormat || "AM"
     );
 
     const now = new Date();
@@ -132,7 +132,7 @@ export const getWebinarAttendance = async (
   options: { includeUsers?: boolean; userLimit?: number } = {
     includeUsers: false,
     userLimit: 100,
-  },
+  }
 ) => {
   const { includeUsers, userLimit } = options;
   try {
@@ -258,5 +258,29 @@ export const getWebinarAttendance = async (
       status: 500,
       message: "Failed to fetch webinars. Please try again.",
     };
+  }
+};
+
+export const getWebinarById = async (liveWebinarId: string) => {
+  try {
+    const webinar = await prisma.webinar.findUnique({
+      where: {
+        id: liveWebinarId,
+      },
+      include: {
+        presenter: {
+          select: {
+            id: true,
+            name: true,
+            profileImage: true,
+            stripeConnectId: true,
+          },
+        },
+      },
+    });
+    return webinar;
+  } catch (err) {
+    console.error("Error fetching webinar", err);
+    throw new Error("Failed to fetch webinar");
   }
 };
