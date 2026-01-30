@@ -98,7 +98,7 @@ const WaitlistComponent = (props: Props) => {
       toast.success(
         webinarStatus === WebinarStatusEnum.LIVE
           ? "Successfully joined the webinar"
-          : "Succesfully registerd to the webinar"
+          : "Succesfully registerd to the webinar",
       );
       setEmail("");
       setName("");
@@ -116,7 +116,7 @@ const WaitlistComponent = (props: Props) => {
     } catch (error) {
       console.error("Error registering for webinar:", error);
       toast.error(
-        error instanceof Error ? error.message : "Something went wrong"
+        error instanceof Error ? error.message : "Something went wrong",
       );
     } finally {
       setIsSubmitting(false);
@@ -139,10 +139,10 @@ const WaitlistComponent = (props: Props) => {
         </Button>
       </DialogTrigger>
       <DialogContent
-        className="border-0 bg-transparent"
+        className="bg-background border border-input rounded-xl p-4"
         showCloseButton={false}
       >
-        <DialogHeader className="justify-center items-center border border-input rounded-xl p-4 bg-background">
+        <DialogHeader className="justify-center items-center  ">
           <DialogTitle className="text-center text-lg  font-semibold mb-4">
             {webinarStatus === WebinarStatusEnum.LIVE
               ? "Join the Webinar"

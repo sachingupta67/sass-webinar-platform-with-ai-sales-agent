@@ -8,6 +8,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAttendeeStore } from "@/store/useAttendeeStore";
 import { toast } from "sonner";
 import WaitlistComponent from "./UpcomingWebinar/WaitlistComponent";
+import LiveStreamState from "./LiveWebinar/LiveStreamState";
+import { WebinarWithPresenter } from "@/lib/types";
 
 type Props = {
   apiKey: string;
@@ -15,7 +17,7 @@ type Props = {
   callId: string;
   user: User | null;
   error: string | undefined;
-  webinar: Webinar;
+  webinar: WebinarWithPresenter;
 };
 const RenderWebinar = (props: Props) => {
   const router = useRouter();
@@ -34,20 +36,28 @@ const RenderWebinar = (props: Props) => {
   const renderWebinarStatus = () => {
     switch (webinar.webinarStatus) {
       case WebinarStatusEnum.SCHEDULED:
+        console.log("Webinar is scheduled");
         return (
           <WebinarUpcomingState webinar={webinar} currentUser={user || null} />
         );
       case WebinarStatusEnum.WAITING_ROOM:
+        console.log("Webinar is waiting room");
         return (
           <WebinarUpcomingState webinar={webinar} currentUser={user || null} />
         );
       case WebinarStatusEnum.LIVE:
+        console.log("Webinar is live");
         return (
           // TODO : Add Livestream component and webinar stuff
           <React.Fragment>
             {user?.id === webinar.presenterId ? (
-              // <LiveStreamState apiKey={apiKey} token={token} callId={callId} />
-              "Live Stream State for Presenter"
+              <LiveStreamState
+                apiKey={apiKey}
+                token={token}
+                callId={callId}
+                webinar={webinar}
+                user={user}
+              />
             ) : attendee ? (
               // <Participant apiKey={apiKey} token={token} callId={callId} />
               "Live Stream State for Participant"
@@ -60,6 +70,7 @@ const RenderWebinar = (props: Props) => {
           </React.Fragment>
         );
       case WebinarStatusEnum.CANCELLED:
+        console.log("Webinar is cancelled");
         return (
           <div className="flex justify-center items-center h-full w-full">
             <div className="text-center space-y-4">
@@ -74,6 +85,7 @@ const RenderWebinar = (props: Props) => {
           </div>
         );
       default:
+        console.log("Webinar is default");
         return (
           <WebinarUpcomingState webinar={webinar} currentUser={user || null} />
         );

@@ -87,3 +87,6 @@ Now Need to initiase the stripe client
 - add products ex: Premium Pro Basic with amounts
   - copy price id
   - make an object of priceids and expose into stripe initlizer files
+
+Stream API Key - y43abtnr2bjt
+Stream Secret - tvrceq9a5uqvep8ssky54sxc7zkrzktdm6eh75jmsurb47prwcsf6787xxjnnuzz

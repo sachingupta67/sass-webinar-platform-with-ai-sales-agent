@@ -3,7 +3,7 @@ import {
   WebinarBasicInfo,
   WebinarCTA,
 } from "@/store/useWebinarStore";
-import { Attendee } from "./generated/prisma/client";
+import { Attendee, User, Webinar } from "./generated/prisma/client";
 
 export type ValidationErrors = Record<string, string>;
 
@@ -78,4 +78,8 @@ export type AttendanceData = {
   count: number;
   users: Attendee[];
   webinarTags?: string[];
+};
+
+export type WebinarWithPresenter = Webinar & {
+  presenter: User;
 };

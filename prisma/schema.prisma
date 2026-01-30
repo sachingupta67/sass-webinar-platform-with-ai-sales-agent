@@ -117,6 +117,9 @@ model Attendee {
   callStatus CallStatusEnum @default(PENDING)
   attendance Attendance[]
   webinar    Webinar[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Attendance {
@@ -132,7 +135,7 @@ model Attendance {
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
   attendeeId   String           @db.Uuid
-  userId       String?           @db.Uuid
+  userId       String?          @db.Uuid
 
   @@unique([attendeeId, webinarId]) // this enforce 1 attendee per webinar
   @@index([webinarId])

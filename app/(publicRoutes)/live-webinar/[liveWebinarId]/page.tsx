@@ -3,6 +3,7 @@ import { getWebinarById } from "@/actions/webinar";
 import React from "react";
 import RenderWebinar from "./_components/RenderWebinar";
 import { User } from "@/lib/generated/prisma/client";
+import { WebinarWithPresenter } from "@/lib/types";
 
 type Props = {
   params: Promise<{
@@ -28,9 +29,15 @@ const Page = async (props: Props) => {
 
   // TODO : Create API KEys
 
-  const apiKey = "process.env.STREAM_API_KEY" as string;
-  const token = "process.env.STREAM_TOKEN" as string;
-  const callId = "process.env.STREAM_CALL_ID" as string;
+  const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY as string;
+  const token = process.env.STREAM_TOKEN as string;
+  const callId = process.env.STREAM_CALL_ID as string;
+
+  console.log({
+    apiKey,
+    token,
+    callId,
+  });
 
   return (
     <div className="w-full min-h-screen mx-auto">
@@ -40,7 +47,7 @@ const Page = async (props: Props) => {
         callId={callId}
         user={checkUser.user || null}
         error={error}
-        webinar={webinarData}
+        webinar={webinarData as WebinarWithPresenter}
       />
     </div>
   );
